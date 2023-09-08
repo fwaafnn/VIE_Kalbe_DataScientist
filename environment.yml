@@ -1,0 +1,13 @@
+name: kalbe_ds
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - pip
+  - numpy
+  - pandas
+  - jupyter
+  - matplotlib
+  - seaborn
+  - scikit-learn
