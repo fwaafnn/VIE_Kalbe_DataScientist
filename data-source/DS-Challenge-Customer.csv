@@ -1,4 +1,4 @@
-customerID,age,gender,marital_status,income
+CustomerID,age,gender,marital_status,income
 1,55,1,Married,5.12
 2,60,1,Married,6.23
 3,32,1,Married,9.17
