@@ -62,6 +62,10 @@ df_merge.info()
 # %%
 daily_data = df_merge.groupby(df_merge.index.date)['Qty'].sum().reset_index()
 daily_data.columns = ['Date', 'TotalQty']
+
+# transformasi tipe data dari kolom 'Date'
+daily_data['Date'] = pd.to_datetime(daily_data['Date'], format='%d/%m/%Y')
+daily_data.info()
 daily_data
 
 # %% [markdown]
@@ -94,14 +98,29 @@ model = ARIMA(train_data['TotalQty'], order=(1,1,1))
 model_fit = model.fit()
 
 # Model melakukan prediksi
-forecast_result = model_fit.forecast(steps=len(test_data))
+# predict_result = model_fit.predict(steps=len(test_data))
+predictions = model_fit.predict(start=len(train_data), end=len(train_data)+len(test_data)-1)
+
+# %% [markdown]
+# ##### Membuat Visualisasi Perbandingan
+
+# %%
+plt.figure(figsize=(12,6))
+plt.plot(test_data['Date'], test_data['TotalQty'], label='Actual Data', color='b', marker='o', linestyle='-')
+plt.plot(test_data['Date'], predictions, label='Predict Data', color='r', marker='o', linestyle='--')
+plt.title("Comparison between Predict Data vs Actual Data")
+plt.xlabel('Date')
+plt.ylabel('Total Quantity')
+plt.grid(True)
+plt.legend()
+plt.show()
 
 # %% [markdown]
 # ##### Evaluasi Model
 
 # %%
 # menghitung MSE (Mean Square Error)
-mse = mean_squared_error(test_data['TotalQty'], forecast_result)
+mse = mean_squared_error(test_data['TotalQty'], predictions)
 print('Mean Squared Error (MSE):', mse)
 
 
